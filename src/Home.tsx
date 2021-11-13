@@ -6,7 +6,7 @@ import './Home.less';
 export const Home: React.FC = () => {
   return (
     <div className="home">
-      <h1>Necronomicon 3.0</h1>
+      <h1>Necronomicon 3.01</h1>
       <h2>Cards from the Necronomicon 1.8 Adobe Flash game.</h2>
       <nav className="home__menu">
         <ul>
