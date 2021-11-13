@@ -1,0 +1,54 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  background-color: #181818;
+  background-image: url('https://www.toptal.com/designers/subtlepatterns/patterns/dark_wood.png');
+  color: grey;
+  height: 100%;
+  margin: 0;
+}
+
+.App {
+  font-family: sans-serif;
+  margin: 1rem;
+}
+
+.button {
+  color: inherit;
+  cursor: pointer;
+  padding: 0.5em 1em;
+
+  .hover;
+  .interactive;
+}
+
+.hover {
+  &:hover {
+    background-color: #0003;
+    border-color: #fff3;
+  }
+}
+
+.interactive {
+  background-color: #0006;
+  border: 1px solid #fff2;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.nav-link {
+  color: darkorange;
+  display: inline-block;
+  padding: 2em;
+
+  .hover;
+  .interactive;
+}

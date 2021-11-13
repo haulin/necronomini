@@ -1,0 +1,68 @@
+.challenger {
+  padding: 1em 2em 0em;
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.play-game {
+  &__stats {
+    align-items: baseline;
+    display: grid;
+    gap: 0.5em;
+    grid-template-columns: auto 1fr;
+
+    dt {
+      text-align: right;
+    }
+
+    dd {
+      margin-left: 1em;
+    }
+
+    strong {
+      font-size: 1.5em;
+    }
+  }
+
+  &__wrap {
+    display: grid;
+    gap: 1em;
+    grid-template-areas:
+      'cards-opponent cards-opponent cards-opponent cards-opponent cards-opponent'
+      'player creature-player necronomicon creature-opponent opponent'
+      'cards-player cards-player cards-player cards-player cards-player';
+    margin-top: 3em;
+
+    div {
+      background-color: #0006;
+      border: 1px solid #fff3;
+      min-height: 6em;
+      min-width: 1em;
+    }
+  }
+}
+
+// grid areas
+.cards-opponent {
+  grid-area: cards-opponent;
+}
+.cards-player {
+  grid-area: cards-player;
+}
+.creature-opponent {
+  grid-area: creature-opponent;
+}
+.creature-player {
+  grid-area: creature-player;
+}
+.necronomicon {
+  grid-area: necronomicon;
+}
+.opponent {
+  grid-area: opponent;
+}
+.player {
+  grid-area: player;
+}
