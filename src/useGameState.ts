@@ -17,13 +17,13 @@ type ChallengerStats = {
   sanity: number;
 };
 
-interface InternalGameState {
+export interface InternalGameState {
   log: string[];
   opponent: ChallengerStats;
   player: ChallengerStats;
 }
 
-const initialState: InternalGameState = {
+export const initialState: InternalGameState = {
   log: [],
   opponent: {
     arcanePower: 0,
@@ -90,7 +90,7 @@ const calculateDamage = (
   return 0;
 };
 
-const conditionIsMet = (
+export const conditionIsMet = (
   condition: Condition | undefined,
   challenger: Challenger,
   state: InternalGameState,
@@ -98,13 +98,15 @@ const conditionIsMet = (
   const { player } = getRoles(challenger);
   return (
     condition === undefined ||
-    (condition === 'has-creature' && state[player].creature) ||
+    (condition === 'has-creature' && !!state[player].creature) ||
     (condition === 'insane' && state[player].sanity <= 0) ||
     (condition === 'not-insane' && state[player].sanity > 0)
   );
 };
 
-const getRoles = (challenger: Challenger): Record<Challenger, Challenger> => {
+export const getRoles = (
+  challenger: Challenger,
+): Record<Challenger, Challenger> => {
   const opponent = challenger === 'opponent' ? 'player' : 'opponent';
   const player = challenger === 'opponent' ? 'opponent' : 'player';
   return { opponent, player };
