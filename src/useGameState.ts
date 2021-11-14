@@ -1,6 +1,15 @@
 /* eslint @typescript-eslint/no-use-before-define: ["error", { "variables": false }] */
 import React from 'react';
-import { adjustmentIsObject, Card, Condition, Creature } from './cards';
+import {
+  adjustmentIsObject,
+  Card,
+  Condition,
+  Creature,
+  Effect,
+  EffectStatAdjustment,
+  StatAdjustment,
+} from './cards';
+import { deepCopy } from './utils';
 
 type Challenger = 'player' | 'opponent';
 
@@ -13,8 +22,10 @@ export type GameAction = {
 type ChallengerStats = {
   arcanePower: number;
   creature: Creature | null;
-  health: number;
+  elderDefense: number;
+  life: number;
   sanity: number;
+  taint: number;
 };
 
 export interface InternalGameState {
@@ -28,14 +39,18 @@ export const initialState: InternalGameState = {
   opponent: {
     arcanePower: 0,
     creature: null,
-    health: 40,
+    elderDefense: 0,
+    life: 40,
     sanity: 25,
+    taint: 0,
   },
   player: {
     arcanePower: 0,
     creature: null,
-    health: 40,
+    elderDefense: 0,
+    life: 40,
     sanity: 25,
+    taint: 0,
   },
 };
 
@@ -43,25 +58,23 @@ export interface GameState extends InternalGameState {
   updateState: React.Dispatch<GameAction>;
 }
 
-const adjustHealth = (
+const processDamage = (
   card: Card,
   challenger: Challenger,
   state: InternalGameState,
 ): InternalGameState => {
-  let newState: InternalGameState = {
-    ...state,
-  };
+  let newState = deepCopy(state);
   const { opponent } = getRoles(challenger);
   if (card.effectOpponent?.damage) {
     if (typeof card.effectOpponent.damage === 'number') {
-      newState[opponent].health -= card.effectOpponent.damage;
+      newState[opponent].life -= card.effectOpponent.damage;
     }
     if (
       adjustmentIsObject(card.effectOpponent.damage) &&
       conditionIsMet(card.effectOpponent.damage.condition, challenger, state)
     ) {
       const damage = calculateDamage(card, challenger, state);
-      newState[opponent].health -= damage;
+      newState[opponent].life -= damage;
     }
   }
   return newState;
@@ -112,16 +125,74 @@ export const getRoles = (
   return { opponent, player };
 };
 
+const processStatAdjustment = (
+  effect: Effect | undefined,
+  stat: keyof EffectStatAdjustment,
+  challenger: Challenger,
+  state: InternalGameState,
+) => {
+  let newState = deepCopy(state);
+  const { opponent } = getRoles(challenger);
+  if (!!effect && effect[stat]) {
+    let effectStat = effect[stat] as StatAdjustment; // TODO: remove cast
+    if (typeof effectStat === 'number') {
+      newState[challenger][stat] += effectStat;
+    } else {
+      let effectStats = effectStat;
+      if (adjustmentIsObject(effectStats)) {
+        effectStats = [effectStats];
+      }
+      // TODO: damage should not be StatAdjustment and this check unneeded
+      if (effectStats !== 'sanity') {
+        effectStats.forEach((effectStat) => {
+          if (
+            conditionIsMet(effectStat.condition, challenger, newState) &&
+            effectStat.set !== undefined
+          ) {
+            newState[challenger][stat] =
+              effectStat.set === 'opponent'
+                ? newState[opponent][stat]
+                : effectStat.set;
+          }
+        });
+      }
+    }
+  }
+  return newState;
+};
+
+const processAllStatAdjustments = (
+  card: Card,
+  challenger: Challenger,
+  state: InternalGameState,
+) => {
+  let newState = deepCopy(state);
+  ([
+    'arcanePower',
+    'elderDefense',
+    'life',
+    'sanity',
+    'taint',
+  ] as (keyof EffectStatAdjustment)[]).forEach((stat) => {
+    newState = processStatAdjustment(
+      card.effectOpponent,
+      stat,
+      challenger,
+      newState,
+    );
+  });
+  return newState;
+};
+
 const gameReducer: React.Reducer<InternalGameState, GameAction> = (
   state,
   { card, challenger, type },
 ) => {
   switch (type) {
     case 'play-card': {
-      let newState: InternalGameState = {
-        ...state,
-      };
-      newState = adjustHealth(card, challenger, newState);
+      let newState = deepCopy(state);
+      newState = processAllStatAdjustments(card, challenger, newState);
+      newState = processDamage(card, challenger, newState);
       return newState;
     }
   }

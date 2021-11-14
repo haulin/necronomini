@@ -1,4 +1,4 @@
-import { Condition } from './cards';
+import { deepCopy } from './utils';
 import {
   conditionIsMet,
   getRoles,
@@ -6,7 +6,6 @@ import {
   InternalGameState,
 } from './useGameState';
 
-const deepCopy = (object: any) => JSON.parse(JSON.stringify(object));
 const stateFixture: InternalGameState = deepCopy(initialState);
 
 describe('useGameState', () => {

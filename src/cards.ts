@@ -96,17 +96,12 @@ export type Creature = null | {
   ignoreDefense?: boolean;
 };
 
-interface Effect {
-  arcanePower?: StatAdjustment;
+export interface Effect extends EffectStatAdjustment {
   creature?: Creature;
-  damage?: StatAdjustment;
+  damage?: StatAdjustment; // TODO: not really a stat adjustment, action maybe?
   disabledSlots?: boolean;
   discardCard?: boolean;
-  elderDefense?: StatAdjustment;
   invulnerability?: boolean;
-  life?: StatAdjustment;
-  sanity?: StatAdjustment;
-  taint?: StatAdjustment;
 }
 
 interface EffectOpponent {
@@ -115,6 +110,14 @@ interface EffectOpponent {
 
 interface EffectPlayer {
   effectPlayer: Effect;
+}
+
+export interface EffectStatAdjustment {
+  arcanePower?: StatAdjustment;
+  elderDefense?: StatAdjustment;
+  life?: StatAdjustment;
+  sanity?: StatAdjustment;
+  taint?: StatAdjustment;
 }
 
 interface InsanityProps {
@@ -129,7 +132,7 @@ type Ordinal = number;
 type Life = number;
 type ArcanePower = number;
 
-type StatAdjustment =
+export type StatAdjustment =
   | number
   | 'sanity'
   | StatAdjustmentObject
@@ -144,7 +147,7 @@ interface StatAdjustmentObject {
 }
 
 export const adjustmentIsObject = (
-  adjustment: StatAdjustment,
+  adjustment?: StatAdjustment,
 ): adjustment is StatAdjustmentObject => {
   return !['number', 'string'].includes(typeof adjustment);
 };

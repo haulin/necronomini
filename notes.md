@@ -66,6 +66,8 @@
   - no arcane stuff / no physical damage
   - lets opponents go first
   - can pick two upgrades every time
+  - upgrades are cheaper
+  - gains more gold for every battle
 
 ## Path tiles
 
