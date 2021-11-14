@@ -1,7 +1,10 @@
 # Useful resources
 
+- https://mastery.games/post/state-machines-in-react/
 - https://game-icons.net/
 - https://lovecraft.fandom.com/wiki/Byakhee
+- https://www.toptal.com/designers/subtlepatterns/tag/dark/page/7/
+- card games: Dream_Quest, Nowhere Prophet,
 
 # Quick game mode
 
@@ -164,6 +167,9 @@
   - if player has less than X ED
 - your creature gets +2 attack and opponent's -2
 - add invulnerability. if you already have it, add ED instead
+- swap your AP with ED
+- copy your ED to AP
+- remove 5 health and add 10 ED
 
 # After run stats
 
