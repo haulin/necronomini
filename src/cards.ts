@@ -143,7 +143,7 @@ export type StatAdjustmentObject =
   | StatAdjustmentObjectBase
   | StatAdjustmentObjectSet;
 
-interface StatAdjustmentObjectBase {
+export interface StatAdjustmentObjectBase {
   add?: 'arcane-power';
   base: number | 'opponent-creature-attack';
   condition?: Condition;
@@ -157,19 +157,19 @@ interface StatAdjustmentObjectSet {
 }
 
 export const adjustmentIsNumber = (
-  adjustment?: StatAdjustment,
+  adjustment?: StatAdjustment | Damage,
 ): adjustment is number => {
   return typeof adjustment === 'number';
 };
 
 export const adjustmentIsObject = (
-  adjustment?: StatAdjustment,
+  adjustment?: StatAdjustment | Damage,
 ): adjustment is StatAdjustmentObject => {
   return !['number', 'string'].includes(typeof adjustment);
 };
 
 export const adjustmentIsArray = (
-  adjustment?: StatAdjustment,
+  adjustment?: StatAdjustment | Damage,
 ): adjustment is StatAdjustmentObject[] => {
   return Array.isArray(adjustment);
 };

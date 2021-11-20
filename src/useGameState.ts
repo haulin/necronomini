@@ -11,8 +11,8 @@ import {
   Creature,
   Effect,
   EffectStatAdjustment,
-  StatAdjustment,
   StatAdjustmentObject,
+  StatAdjustmentObjectBase,
 } from './cards';
 import { deepCopy } from './utils';
 
@@ -71,14 +71,15 @@ const processDamage = (
   let newState = deepCopy(state);
   const { opponent } = getRoles(challenger);
   if (card.effectOpponent?.damage) {
-    if (typeof card.effectOpponent.damage === 'number') {
-      newState[opponent].life -= card.effectOpponent.damage;
+    const damageAdjustment = card.effectOpponent.damage;
+    if (adjustmentIsNumber(damageAdjustment)) {
+      newState[opponent].life -= damageAdjustment;
     }
     if (
-      adjustmentIsObject(card.effectOpponent.damage) &&
-      conditionIsMet(card.effectOpponent.damage.condition, challenger, state)
+      adjustmentIsObject(damageAdjustment) &&
+      conditionIsMet(damageAdjustment.condition, challenger, state)
     ) {
-      const damage = calculateDamage(card, challenger, state);
+      const damage = calculateDamage(damageAdjustment, challenger, state);
       newState[opponent].life -= damage;
     }
   }
@@ -86,26 +87,18 @@ const processDamage = (
 };
 
 const calculateDamage = (
-  card: Card,
+  damageAdjustment: StatAdjustmentObjectBase,
   challenger: Challenger,
   state: InternalGameState,
 ): number => {
   const { opponent, player } = getRoles(challenger);
-  if (
-    card.effectOpponent?.damage &&
-    adjustmentIsObject(card.effectOpponent.damage)
-  ) {
-    let damage =
-      card.effectOpponent.damage.base === 'opponent-creature-attack'
-        ? state[opponent].creature?.attack || 0
-        : card.effectOpponent.damage.base || 0;
-    damage +=
-      card.effectOpponent.damage.add === 'arcane-power'
-        ? state[player].arcanePower
-        : 0;
-    return damage;
-  }
-  return 0;
+  let damage =
+    damageAdjustment.base === 'opponent-creature-attack'
+      ? state[opponent].creature?.attack || 0
+      : damageAdjustment.base || 0;
+  damage +=
+    damageAdjustment.add === 'arcane-power' ? state[player].arcanePower : 0;
+  return damage;
 };
 
 export const conditionIsMet = (
@@ -161,7 +154,7 @@ const processStatAdjustment = (
 ) => {
   let newState = deepCopy(state);
   if (!!effect && effect[stat]) {
-    let effectStat = effect[stat] as StatAdjustment; // TODO: remove cast
+    let effectStat = effect[stat];
     if (adjustmentIsNumber(effectStat)) {
       newState[challenger][stat] += effectStat;
     }

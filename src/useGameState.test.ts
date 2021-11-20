@@ -1,4 +1,4 @@
-import { cards, StatAdjustmentObject } from './cards';
+import { StatAdjustmentObject } from './cards';
 import {
   conditionIsMet,
   getRoles,
