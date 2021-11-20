@@ -136,7 +136,6 @@ type ArcanePower = number;
 
 export type StatAdjustment =
   | number
-  | 'sanity'
   | StatAdjustmentObject
   | StatAdjustmentObject[];
 
@@ -167,12 +166,6 @@ export const adjustmentIsObject = (
   adjustment?: StatAdjustment,
 ): adjustment is StatAdjustmentObject => {
   return !['number', 'string'].includes(typeof adjustment);
-};
-
-export const adjustmentIsSanity = (
-  adjustment?: StatAdjustment,
-): adjustment is 'sanity' => {
-  return typeof adjustment === 'string';
 };
 
 export const adjustmentIsArray = (
