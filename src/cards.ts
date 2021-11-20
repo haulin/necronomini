@@ -96,9 +96,11 @@ export type Creature = null | {
   ignoreDefense?: boolean;
 };
 
+export type Damage = number | 'sanity' | StatAdjustmentObjectBase;
+
 export interface Effect extends EffectStatAdjustment {
   creature?: Creature;
-  damage?: StatAdjustment; // TODO: not really a stat adjustment, action maybe?
+  damage?: Damage;
   disabledSlots?: boolean;
   discardCard?: boolean;
   invulnerability?: boolean;
@@ -138,18 +140,57 @@ export type StatAdjustment =
   | StatAdjustmentObject
   | StatAdjustmentObject[];
 
-interface StatAdjustmentObject {
+export type StatAdjustmentObject =
+  | StatAdjustmentObjectBase
+  | StatAdjustmentObjectSet;
+
+interface StatAdjustmentObjectBase {
   add?: 'arcane-power';
-  base?: number | 'opponent-creature-attack';
+  base: number | 'opponent-creature-attack';
   condition?: Condition;
   ignoreDefense?: boolean;
-  set?: number | 'opponent';
 }
+
+interface StatAdjustmentObjectSet {
+  condition?: Condition;
+  ignoreDefense?: boolean;
+  set: number | 'opponent';
+}
+
+export const adjustmentIsNumber = (
+  adjustment?: StatAdjustment,
+): adjustment is number => {
+  return typeof adjustment === 'number';
+};
 
 export const adjustmentIsObject = (
   adjustment?: StatAdjustment,
 ): adjustment is StatAdjustmentObject => {
   return !['number', 'string'].includes(typeof adjustment);
+};
+
+export const adjustmentIsSanity = (
+  adjustment?: StatAdjustment,
+): adjustment is 'sanity' => {
+  return typeof adjustment === 'string';
+};
+
+export const adjustmentIsArray = (
+  adjustment?: StatAdjustment,
+): adjustment is StatAdjustmentObject[] => {
+  return Array.isArray(adjustment);
+};
+
+export const adjustmentObjectIsBase = (
+  adjustment?: StatAdjustment,
+): adjustment is StatAdjustmentObjectBase => {
+  return adjustment?.hasOwnProperty('base') || false;
+};
+
+export const adjustmentObjectIsSet = (
+  adjustment?: StatAdjustment,
+): adjustment is StatAdjustmentObjectSet => {
+  return adjustment?.hasOwnProperty('set') || false;
 };
 
 export const cards: Card[] = [

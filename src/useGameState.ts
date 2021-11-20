@@ -1,13 +1,18 @@
 /* eslint @typescript-eslint/no-use-before-define: ["error", { "variables": false }] */
 import React from 'react';
 import {
+  adjustmentIsArray,
+  adjustmentIsNumber,
   adjustmentIsObject,
+  adjustmentObjectIsBase,
+  adjustmentObjectIsSet,
   Card,
   Condition,
   Creature,
   Effect,
   EffectStatAdjustment,
   StatAdjustment,
+  StatAdjustmentObject,
 } from './cards';
 import { deepCopy } from './utils';
 
@@ -125,42 +130,6 @@ export const getRoles = (
   return { opponent, player };
 };
 
-const processStatAdjustment = (
-  effect: Effect | undefined,
-  stat: keyof EffectStatAdjustment,
-  challenger: Challenger,
-  state: InternalGameState,
-) => {
-  let newState = deepCopy(state);
-  const { opponent } = getRoles(challenger);
-  if (!!effect && effect[stat]) {
-    let effectStat = effect[stat] as StatAdjustment; // TODO: remove cast
-    if (typeof effectStat === 'number') {
-      newState[challenger][stat] += effectStat;
-    } else {
-      let effectStats = effectStat;
-      if (adjustmentIsObject(effectStats)) {
-        effectStats = [effectStats];
-      }
-      // TODO: damage should not be StatAdjustment and this check unneeded
-      if (effectStats !== 'sanity') {
-        effectStats.forEach((effectStat) => {
-          if (
-            conditionIsMet(effectStat.condition, challenger, newState) &&
-            effectStat.set !== undefined
-          ) {
-            newState[challenger][stat] =
-              effectStat.set === 'opponent'
-                ? newState[opponent][stat]
-                : effectStat.set;
-          }
-        });
-      }
-    }
-  }
-  return newState;
-};
-
 const processAllStatAdjustments = (
   card: Card,
   challenger: Challenger,
@@ -181,6 +150,67 @@ const processAllStatAdjustments = (
       newState,
     );
   });
+  return newState;
+};
+
+const processStatAdjustment = (
+  effect: Effect | undefined,
+  stat: keyof EffectStatAdjustment,
+  challenger: Challenger,
+  state: InternalGameState,
+) => {
+  let newState = deepCopy(state);
+  if (!!effect && effect[stat]) {
+    let effectStat = effect[stat] as StatAdjustment; // TODO: remove cast
+    if (adjustmentIsNumber(effectStat)) {
+      newState[challenger][stat] += effectStat;
+    }
+    if (adjustmentIsObject(effectStat)) {
+      newState = processStatAdjustmentObject(
+        effectStat,
+        stat,
+        challenger,
+        newState,
+      );
+    }
+    if (adjustmentIsArray(effectStat)) {
+      effectStat.forEach((effectStat) => {
+        newState = processStatAdjustmentObject(
+          effectStat,
+          stat,
+          challenger,
+          newState,
+        );
+      });
+    }
+  }
+  return newState;
+};
+
+export const processStatAdjustmentObject = (
+  effectStat: StatAdjustmentObject,
+  stat: keyof EffectStatAdjustment,
+  challenger: Challenger,
+  state: InternalGameState,
+) => {
+  let newState = deepCopy(state);
+  const { opponent } = getRoles(challenger);
+  if (conditionIsMet(effectStat.condition, challenger, newState)) {
+    if (adjustmentObjectIsSet(effectStat)) {
+      newState[challenger][stat] =
+        effectStat.set === 'opponent'
+          ? newState[opponent][stat]
+          : effectStat.set;
+    }
+    if (adjustmentObjectIsBase(effectStat)) {
+      newState[challenger][stat] +=
+        effectStat.base === 'opponent-creature-attack'
+          ? state[opponent].creature?.attack || 0
+          : effectStat.base;
+      newState[challenger][stat] +=
+        effectStat.add === 'arcane-power' ? state[challenger].arcanePower : 0;
+    }
+  }
   return newState;
 };
 
