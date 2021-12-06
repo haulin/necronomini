@@ -63,29 +63,6 @@ export interface GameState extends InternalGameState {
   updateState: React.Dispatch<GameAction>;
 }
 
-const processDamage = (
-  card: Card,
-  challenger: Challenger,
-  state: InternalGameState,
-): InternalGameState => {
-  let newState = deepCopy(state);
-  const { opponent } = getRoles(challenger);
-  if (card.effectOpponent?.damage) {
-    const damageAdjustment = card.effectOpponent.damage;
-    if (adjustmentIsNumber(damageAdjustment)) {
-      newState[opponent].life -= damageAdjustment;
-    }
-    if (
-      adjustmentIsObject(damageAdjustment) &&
-      conditionIsMet(damageAdjustment.condition, challenger, state)
-    ) {
-      const damage = calculateDamage(damageAdjustment, challenger, state);
-      newState[opponent].life -= damage;
-    }
-  }
-  return newState;
-};
-
 const calculateDamage = (
   damageAdjustment: StatAdjustmentObjectBase,
   challenger: Challenger,
@@ -146,6 +123,34 @@ const processAllStatAdjustments = (
   return newState;
 };
 
+const processDamage = (
+  card: Card,
+  challenger: Challenger,
+  state: InternalGameState,
+): InternalGameState => {
+  let newState = deepCopy(state);
+  const { opponent } = getRoles(challenger);
+  if (card.effectOpponent?.damage) {
+    const damageAdjustment = card.effectOpponent.damage;
+    let damage = 0;
+    if (adjustmentIsNumber(damageAdjustment)) {
+      damage = damageAdjustment;
+    }
+    if (
+      adjustmentIsObject(damageAdjustment) &&
+      conditionIsMet(damageAdjustment.condition, challenger, state)
+    ) {
+      damage = calculateDamage(damageAdjustment, challenger, state);
+    }
+    newState[opponent].life -= Math.max(
+      0,
+      damage - state[opponent].elderDefense,
+    );
+    // TODO: invulnerability / items / physical defense
+  }
+  return newState;
+};
+
 const processStatAdjustment = (
   effect: Effect | undefined,
   stat: keyof EffectStatAdjustment,
@@ -196,6 +201,7 @@ export const processStatAdjustmentObject = (
           : effectStat.set;
     }
     if (adjustmentObjectIsBase(effectStat)) {
+      // TODO: almost the same functionality as calculateDamage
       newState[challenger][stat] +=
         effectStat.base === 'opponent-creature-attack'
           ? state[opponent].creature?.attack || 0

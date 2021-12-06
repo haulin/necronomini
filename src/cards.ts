@@ -152,7 +152,6 @@ export interface StatAdjustmentObjectBase {
 
 interface StatAdjustmentObjectSet {
   condition?: Condition;
-  ignoreDefense?: boolean;
   set: number | 'opponent';
 }
 

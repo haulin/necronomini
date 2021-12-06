@@ -7,7 +7,7 @@
 - https://github.com/yurkth/stsmapgen
 - https://www.reddit.com/r/gamedev/comments/fedcvu/procedural_map_generation_inspired_by_slay_the/
 - card games: Dream_Quest, Nowhere Prophet,
-- hours spent: 17
+- hours spent: 21
 
 # Quick game mode
 
@@ -96,6 +96,7 @@
   - opponent uses your deck
 - unknown (any of the above - not boss)
 - boss encounter
+- remains of the previous play(s?) if defeated
 
 ## Encounters
 
@@ -109,6 +110,8 @@
   - every time they take damage, reduce 2 taunt
   - has an unkillable creature
 - play 1 card or discard it for extra sanity
+- inventory of upgrades that you can equip for the battle
+  - perishables can be used just once
 
 ## Upgrades for gold
 
@@ -120,6 +123,7 @@
     - start with 6 cards in hand
     - lower cost of all cards by 1
     - increase cost of all opponent's cards by 1
+  - increase hand limit
   - play additional card once per fight?
     - twice & thrice?
   - discard two cards each turn
@@ -173,6 +177,10 @@
       - remove opponent's ED & EP once per fight
     - increase all your damage dealt by 1
       - by 2
+  - 10% chance of a critical physical attack
+    - 20%
+      - 40%
+        - 80%
 - opponent starts with 1 taint
   - opponent starts with 2 taint
     - opponent starts with 4 taint
@@ -209,17 +217,21 @@
 
 # Extra cards
 
+- mix & match all the stats and mechanics
 - play something and opponent skips turn
-- attack without the creature retaliating
+- shuffle some cards into opponent's deck
 - draw a card and reduce its cost to 0
+- disable opponents card slot
+- search your deck for a specific card
+- one time use cards that get removed from your deck when you play them
 - creature attack enhanced by your AP
-- when creature dies, gain ED
 - creature that temporarily reduces your ED
 - creature that cannot be ignored
 - creature that attacks twice
 - creature that gets back in your hand when killed
 - creature that yields gold when it attacks
 - creature that spawns another one when killed
+- creature that regenerates if you have at least X AP
 - creature that improves after 1 turn / each turn
 - creature that kills opponent creature if it blocks it
 - creature that gives you another creature in your hand when
@@ -232,21 +244,25 @@
 - creature that dies after N turns
 - creature with enhanced/lowered defense
 - creature that damages opponent's creature each time it attacks
+- creature that costs 1 sanity each turn
+- creature that gets more powerful if insane
+- creature that block attacks of creatures of any power
 - return a creature into opponent's hand
-- mix & match all the stats and mechanics
+- when creature dies, gain ED
+- attack without the creature retaliating
 - deal damage and kill a creature if it has less than X damage
   - if player has less than X ED
 - your creature gets +2 attack and opponent's -2
+- berserk - attack with 2x your creature's attack, then it dies
 - damage opponent and his creature gets -2
+- steal opponent's creature
+- swap creatures between player and opponent
+- deal damage equal to opponent's AP
 - add invulnerability. if you already have it, add ED instead
 - swap your AP with ED
 - copy your ED to AP
 - remove 5 health and add 10 ED
 - deal damage multiple times, e.g. 3x2
-- steal opponent's creature
-- swap creatures between player and opponent
-- one time use cards that get removed from your deck when you play them
-- disable opponents card slot
 
 # After run stats
 
