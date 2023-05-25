@@ -52,7 +52,7 @@ export const CardLibrary: React.FC = () => {
       </SubpageNav>
       <ul className="cards-wrap">
         {sortedCards.map((card) => (
-          <li className={getCardClasses(card).join(' ')}>
+          <li className={getCardClasses(card).join(' ')} key={card.name}>
             <h1>{card.name}</h1>
             <b>{card.cost}</b>
             <p>{card.description}</p>

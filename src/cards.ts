@@ -36,11 +36,47 @@ const Insanity: Record<string, InsanityProps> = {
     },
     minimumSanity: -10,
   },
+  depression: {
+    description: 'Cannot gain life or sanity for 5 turns',
+    effect: {
+      life: 0,
+      sanity: 0,
+    },
+  },
+  hypochondria: {
+    description: 'Slowly loses life over time',
+    effect: {
+      life: -2,
+    },
+  },
+  ludomania: {
+    description: 'Attacks cause 2x damage on player or opponent randomly, but each card played costs 1 gold',
+    effectRandom: [
+      {
+        effectPlayer: {
+          damage: 10,
+        },
+      },
+      {
+        effectOpponent: {
+          damage: 10,
+        },
+      },
+    ],
+  },
   megalomania: {
     description: 'Gains 2 Arcane Power and 4 Taint each turn',
     effect: {
       arcanePower: 2,
       taint: 4,
+    },
+  },
+  paranoia: {
+    description: 'Opponent always has Shoggoth creature',
+    effectOpponent: {
+      creature: {
+        attack: 6,
+      },
     },
   },
   schizofrenia: {
@@ -125,6 +161,7 @@ export interface EffectStatAdjustment {
 interface InsanityProps {
   description: string;
   effect: Effect;
+  effectRandom?: (EffectOpponent | EffectPlayer)[];
   minimumSanity?: number;
 }
 
@@ -487,7 +524,7 @@ export const cards: Card[] = [
   {
     name: 'Hound of Tindalos',
     cost: 4,
-    description: 'Damage 12 + Attack. Ignores Elder Defense.',
+    description: 'Damage 12 + Arcane Power. Ignores Elder Defense.',
     effectOpponent: {
       damage: {
         base: 12,
