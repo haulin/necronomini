@@ -524,6 +524,7 @@
   - when you gain life, gain 1 ED, when you lose life, lose 1 ED
 - nerfs
   - curse - counter, if not lifted in 2 turns, take 10 damage, remove curse
+  - received attack counter - when lifted deal count damage (synergy with multi-shots)
   - attack without the creature retaliating
   - distracted creature - every other attack doesn't retaliate
   - every opponent's attack decreases their life by 2
