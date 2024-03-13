@@ -155,6 +155,7 @@
   - top decker - cards drawn this turn cost 1 less
   - forgets one card after every battle
   - always starts with card X in hand
+  - always starts with the deck sorted alphabetically (or manually)
   - gambler - can reroll shop items
   - cannot use upgrades
 - map related
@@ -254,6 +255,7 @@
 - non-arcane stuff costs courage
   - you gain courage when your creature dies / when you take damage / change stat
 - every N-th turn is a lucky turn?
+- killing a creature / opponent yields souls
 
 ## Upgrades for gold/life/sanity
 
@@ -413,15 +415,16 @@
   - cards with 2 effects, small negative, big positive, resolved at random
   - cards that can be played together with other cards and they get stronger with each one in hand, get a starting 5?
 - creature cards:
-  - creature attack enhanced by your AP
-  - creature that is strong, but reduces your life every turn
+  - **creature that spawns another one when killed**
+  - creature that gives you another creature in your hand when it dies
+  - creature that gets back in your hand when killed
   - creature that restores 1 life and 1 sanity for you every turn
+  - creature that is strong, but reduces your life every turn
   - creature that temporarily reduces your ED
+  - creature attack enhanced by your AP
   - creature that cannot be ignored
   - creature that attacks twice
-  - creature that gets back in your hand when killed
-  - creature that gives you another creature in your hand when it dies
-  - **creature that spawns another one when killed**
+  - creature that has a taunt
   - creature that explodes when killed, damaging opponent
   - creature that regenerates if you have at least X AP
   - creature that improves after 1 turn / each turn
@@ -451,7 +454,7 @@
   - deal damage equal to opponent's AP
   - deal damage multiple times, e.g. 3x2
   - if the attack is unsuccessful, attack again with extra power
-  - the next damage you should receive transforms into ED/AP
+  - the next damage you should suffer transforms into ED/AP
   - deal damage 2x opponent's last card's cost
   - deal damage 3x AP, but remove all AP afterwards
   - deal damage and sacrifice some player's life
@@ -467,6 +470,7 @@
   - double the amount of your weakest stat (AP, ED, taint, poison, life, ...)
   - card that allows to use an ability. different characters can have several different ones.
   - overdraw 3 cards, discard 3 cards, play another card
+  - card that returns to your hand after play once
   - steal opponent's top-deck card, play it or discard it
   - force opponent to play a certain type of card
   - force opponent to show their hand and discard a specific card
@@ -487,8 +491,11 @@
   - double opponent's taint
   - flashbang - opponent shuffles hand and picks one at random
   - unplayable card. trashes your deck, but gives some buff to progression
+  - different effect based on environment being dark or light
+  - toggle light for synergy
 - buffs
   - invulnerability - maybe this is another stat? fortify? e.g. fortify 2 needs 2 attacks to break, each attack lowers by 1
+  - heart stat - if hp lowered below 1, remove 1 heart. battle ends on 0 hearts
   - poison - another stat - lower life by X, decreases every turn, restoring life
   - shield stat - gets lowered by receiving damage
   - focus stat - enhances next attack and gets used up
@@ -504,6 +511,7 @@
   - each unsuccessful attack increases player's AP by 2
   - when defeated, stay at 1 life, remove this buff
   - -3 damage received for odd amounts (synergy with superstitious)
+  - +3 to your highest stat
   - all banish cards also summon a Byakhee
   - all X cards get replaced by Y
   - damage doubled if sanity below 10 / if (player or opponent) tainted
@@ -519,11 +527,15 @@
   - your attacks are enhanced by your taint
   - if you don't have any ED, you gain 3 AP while buff active
   - AP counter - increment each turn, when replaced / destroyed, apply as much AP
+  - curse - counter, if not lifted in 2 turns, take 10 damage, remove curse
+  - received attack counter - when lifted deal count damage (synergy with multi-shots)
+  - counter for opponent's taint
+  - counter of received damage, if exactly 10, 20, or 30, receive it again
   - gain 1 AP every turn when under 10 HP
   - whenever your AP changes, deal 2 attack
   - when you gain life, gain 1 ED, when you lose life, lose 1 ED
+  - gain 4x the amount of souls
 - nerfs
-  - curse - counter, if not lifted in 2 turns, take 10 damage, remove curse
   - attack without the creature retaliating
   - distracted creature - every other attack doesn't retaliate
   - every opponent's attack decreases their life by 2
@@ -532,12 +544,12 @@
   - creature blocks attacks of creatures of any power
   - hunter's mark - removal of opponent's creature deals dmg equal to creature's attack
   - creature costs 1 sanity each turn
+  - remove enemy's card from their deck while nerf active
+  - decreasing stats also causes damage
   - disable opponents card slot
   - opponent can't gain life
   - opponent suffers -1 ED when you successfully attack
   - stop opponent gaining AP
-  - counter for opponent's taint
-  - counter of received damage, if exactly 10, 20, or 30, receive it again
   - disable opponent's buff slot
 
 # After run stats
