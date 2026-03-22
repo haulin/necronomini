@@ -1,8 +1,9 @@
-import './styles.less';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Home } from './Home';
-import { CardLibrary } from './CardLibrary';
-import { PlayGame } from './PlayGame';
+import React from "react";
+import "./styles.less";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Home } from "./Home";
+import { CardLibrary } from "./CardLibrary";
+import { PlayGame } from "./PlayGame";
 
 export default function App() {
   return (
